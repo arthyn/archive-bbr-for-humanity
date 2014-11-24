@@ -1,0 +1,73 @@
+// bower:scss
+@import "../../bower_components/bourbon/dist/_bourbon.scss";
+@import "../../bower_components/neat/app/assets/stylesheets/_neat.scss";
+// endbower 
+
+$card-bg: #000;
+$card-text: #fff;
+
+body {
+	@include outer-container(100%); 
+	font-smoothing: antialiased;
+	-webkit-font-smoothing: antialiased;
+	font-family: $helvetica;
+	background-color: #f0f0f0;
+	@include perspective(800px);
+}
+.container {
+	@include span-columns(10);
+	@include shift(1);
+	@include margin(25px null 25px null);
+	padding: 10px;
+	@include border-top-radius(5px);
+	@include border-bottom-radius(5px);
+	background-color: white;
+	main {
+		@include row;
+		padding: 1em;
+	}
+}
+
+.shuffle {
+	padding: 0;
+	margin: 2em auto .75em;
+	@include clearfix;
+}
+.card {
+	z-index: 101;
+	list-style: none;
+	display: inline-block;
+	@include clearfix;
+	@include span-columns(3);
+	width: 150px;
+	height: 250px;
+	margin-bottom: 1.25em;
+	@include transition(transform 1.0s ease-in);
+	@include transform-style(preserve-3d);
+}
+.card div,
+#card-custom {
+	position: absolute;
+	@include backface-visibility(hidden);
+	border-radius: 15px;
+	padding: 5%;
+	width: 150px;
+	height: 250px;
+}
+.card .face {
+	background: $card-bg;
+	color: $card-text;
+	z-index: 100;
+}
+.card .back {
+	color: $card-bg;
+	background: $card-text;
+	border: 1px solid black;
+	@include transform(rotateY(-180deg));
+}
+.card-form {
+	@include span-columns(6);
+}
+.card-display {
+	@include span-columns(6);
+}
