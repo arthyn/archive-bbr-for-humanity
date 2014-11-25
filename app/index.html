@@ -9,7 +9,8 @@
         <title>bbrforhumanity</title>
         <meta name="author" content="Hunter Miller">
         <meta name="description" content="landing page for holiday cards">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content = "width = device-width, initial-scale = 1, user-scalable = no" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="shortcut icon" href="/favicon.ico">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css styles/vendor.css -->
@@ -37,40 +38,36 @@
 
         <div class="container">
             <header>
-                <button id="shuffle">Shuffle!</button>
+                <nav>
+                    <ul class="main-nav">
+                        <li class="brand">
+                            <a href="#">BBR</a>
+                        </li>
+                        <li class="idea">
+                            <a href="ideas.html">Ideas</a>
+                        </li>
+                        <li class="diy">
+                            <a href="diyforhumanity.pdf" target="_blank">DIY</a>
+                        </li>
+                    </ul>
+                </nav>
             </header><!-- .header -->
 
             <main>
                 <ul id="card-list" class="items shuffle">
-                    <li class="card shuffle-item">
+                    <li id="active-card" class="card shuffle-item animate">
                         <div class="face"></div>
                         <div class="back">Test</div>
                     </li>
-                    <li class="card shuffle-item">
+                    <li class="card shuffle-item animate">
                         <div class="face"></div>
                         <div class="back">Test</div>
                     </li>
-                    <li class="card shuffle-item">
+                    <li class="card shuffle-item animate">
                         <div class="face"></div>
                         <div class="back">Test</div>
                     </li>
-                    <li class="card shuffle-item">
-                        <div class="face"></div>
-                        <div class="back">Test</div>
-                    </li>
-                    <li class="card shuffle-item">
-                        <div class="face"></div>
-                        <div class="back">Test</div>
-                    </li>
-                    <li class="card shuffle-item">
-                        <div class="face"></div>
-                        <div class="back">Test</div>
-                    </li>
-                    <li class="card shuffle-item">
-                        <div class="face"></div>
-                        <div class="back">Test</div>
-                    </li>
-                    <li class="card shuffle-item">
+                    <li class="card shuffle-item animate">
                         <div class="face"></div>
                         <div class="back">Test</div>
                     </li>
@@ -90,7 +87,9 @@
         <script src="../bower_components/hammerjs/hammer.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
+        <!-- build:js scripts/main.js -->
         <script src="scripts/main.js"></script>
+        <!-- endbuild -->
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

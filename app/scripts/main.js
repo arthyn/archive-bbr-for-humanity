@@ -1,5 +1,6 @@
 var cardPhrases = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 var homeCard;
+var infoCard;
 var ideaCard;
 var diyCard;
 var ecardsCard;
@@ -17,7 +18,7 @@ var card = function (spec) {
 		return spec.html;
 	};
 
-	that.changePosition = function (potentialSlots, cards) {
+	that.changePosition = function (cards, potentialSlots) {
 		!(spec.locked) && (spec.position = generateUniquePosition(cards, potentialSlots));
 	};
 
@@ -25,10 +26,10 @@ var card = function (spec) {
 		return spec.position;
 	};
 
-	function generateUniquePosition(cardList, potentialSlots) {
-		var random = getRandomInt(2, potentialSlots);
-		if (cardList[random]) {
-			var position = generateUniquePosition(cardList, potentialSlots);
+	function generateUniquePosition(cards, potentialSlots) {
+		var random = getRandomInt(2, potentialSlots+2);
+		if (cards[random]) {
+			var position = generateUniquePosition(cards, potentialSlots);
 			return position;
 		} else {
 			return random;
@@ -42,21 +43,25 @@ function generateCardHTML(phrase) {
 	return '<p>' + phrase + '</p>';
 }
 function initializeCards() {
-	homeCard = card({html: '<h1>BBR</h1>', position: 1, locked: true});
-	ideaCard = card({html: '<h2>Ideas for Humanity</h2>', position: 2});
-	diyCard = card({html: '<h2>DIY for Humanity</h2>', position: 3});
-	ecardsCard = card({html: '<h2>Ecards for Humanity</h2>', position: 4});
+	homeCard = card({html: '<h2><span class="green">Holiday</span><br> Cards<br> for<br> Humanity</h2>', position: 1, locked: true});
+	infoCard = card({html: '<p>info</p>', position: 2});
+	ideaCard = card({html: '<h2>Ideas for Humanity</h2>', position: 3});
+	diyCard = card({html: '<h2>DIY for Humanity</h2>', position: 4});
+	//ecardsCard = card({html: '<h2>Ecards for Humanity</h2>', position: 4});
 }
 
-function generateRandomCards(numberOfStaticCards) {
-	var numCardsToGenerate = cardSlots - numberOfStaticCards;
+function generateRandomCards(smallLayout) {
+	var numCardsToGenerate = smallLayout ? cardPhrases.length : cardSlots - 4;
 	var numCardOptions = cardPhrases.length;
 	var outputCards = {};
 
 	outputCards[homeCard.getPosition()] = homeCard;
-	outputCards[ecardsCard.getPosition()] = ecardsCard;
-	outputCards[ideaCard.getPosition()] = ideaCard;
-	outputCards[diyCard.getPosition()] = diyCard;
+	//outputCards[ecardsCard.getPosition()] = ecardsCard;
+	if(!smallLayout) {
+		outputCards[infoCard.getPosition()] = infoCard;
+		outputCards[ideaCard.getPosition()] = ideaCard;
+		outputCards[diyCard.getPosition()] = diyCard;
+	}
 
 	var cardChoices = {};
 	for(var i = 0; i<numCardsToGenerate; i++) {
@@ -69,7 +74,7 @@ function generateRandomCards(numberOfStaticCards) {
 		cardChoices[random] = phrase;
 		var newCard = card({html: generateCardHTML(phrase)});
 		console.log(newCard.getHTML());
-		newCard.changePosition(cardSlots+1, outputCards);
+		newCard.changePosition(outputCards, cardSlots);
 		console.log(newCard.getPosition());
 		outputCards[newCard.getPosition()] = newCard;
 	}
@@ -78,7 +83,22 @@ function generateRandomCards(numberOfStaticCards) {
 	return outputCards;
 }
 
-function insertCardHTML(source) {
+
+
+function setupSmallLayout() {
+	outputCards['pointer'] = 1;
+	var cards = $('.card');
+	var cardWidth = $(cards[0]).width();
+	var gutterWidth = cardWidth / 8;
+
+	for(var i=1; i<cards.length; i++) {
+		$(cards[i]).css('position', 'absolute')
+				.css('left', '-' + ((cardWidth + gutterWidth) * i) + 'px')
+				.css('top', '0');
+	}
+}
+
+function insertCardHTML(source, smallLayout) {
 	var cards = $('.card .face');
 
 	for(var i = 0; i<cards.length; i++) {
@@ -114,6 +134,120 @@ function bindHoverFlip() {
 	);
 }
 
+function setupHammer(element) {
+	var reqAnimationFrame = (function () {
+		    return window[Hammer.prefixed(window, 'requestAnimationFrame')] || function (callback) {
+		        window.setTimeout(callback, 1000 / 60);
+		    };
+		})();
+
+		var area = document.querySelector(".shuffle");
+		var el = element;
+
+		var START_X = Math.round((area.offsetWidth - el.offsetWidth) / 2);
+		var START_Y = Math.round((area.offsetHeight - el.offsetHeight) / 2);
+
+		var ticking = false;
+		var transform;
+		var timer;
+
+		var mc = new Hammer.Manager(el);
+
+		mc.add(new Hammer.Pan({ threshold: 0, pointers: 0 }));
+		mc.add(new Hammer.Swipe()).recognizeWith(mc.get('pan'));
+		mc.add(new Hammer.Tap());
+
+		mc.on("panstart panmove", onPan);
+		mc.on("swipe", onSwipe);
+		mc.on("tap", onTap);
+
+		mc.on("hammer.input", function(ev) {
+		    if(ev.isFinal) {
+		        resetElement();
+		    }
+		});
+
+		function logEvent(ev) {
+		    //el.innerText = ev.type;
+		}
+
+		function resetElement() {
+		    el.className = 'card shuffle-item animate';
+		    transform = {
+		        translate: { x: START_X, y: START_Y },
+		        scale: 1,
+		        angle: 0,
+		        rx: 0,
+		        ry: 0,
+		        rz: 0
+		    };
+		    requestElementUpdate();
+		}
+
+		function updateElementTransform() {
+		    var value = 'translate3d(' + transform.translate.x + 'px, 0, 0)';
+		    el.style.webkitTransform = value;
+		    el.style.mozTransform = value;
+		    el.style.transform = value;
+		    ticking = false;
+		}
+
+		function requestElementUpdate() {
+		    if(!ticking) {
+		        reqAnimationFrame(updateElementTransform);
+		        ticking = true;
+		    }
+		}
+
+		function onPan(ev) {
+		    el.className = "card shuffle-item";
+		    transform.translate = {
+		        x: START_X + ev.deltaX,
+		    };
+
+		    logEvent(ev);
+		    requestElementUpdate();
+		}
+
+		function onSwipe(ev) {
+		    
+		    
+		    var oldCard = el;
+		    el.id = '';
+		    var newActive = document.getElementsByClassName('shuffle-item')[1];
+		    newActive.id = 'active-card';
+		    setupHammer(newActive);
+		    newActive.style.position = 'relative';
+		    newActive.style.left = '0';
+		    var cardList = document.querySelector('#card-list');
+		    oldCard.className = "card shuffle-item";
+		    oldCard = cardList.removeChild(oldCard);
+		    cardList.appendChild(oldCard);
+		    oldCard.removeAttribute('style');
+		    setupSmallLayout();
+
+		    
+
+    	    logEvent(ev);
+    	    requestElementUpdate();
+		}
+
+		function onTap(ev) {
+		    transform.rx = 1;
+		    transform.angle = 25;
+
+		    clearTimeout(timer);
+		    timer = setTimeout(function () {
+		        resetElement();
+		    }, 200);
+
+		    logEvent(ev);
+		    requestElementUpdate();
+		}
+
+		resetElement();
+}
+
 window.Shuffler = (function ($) {
 	'use strict';
 
@@ -138,9 +272,7 @@ window.Shuffler = (function ($) {
 			speed: 400,
 			easing: 'ease',
 			columnWidth: 150,
-			gutterWidth: function (containerWidth) {
-				return 0.0235765 * containerWidth;
-			}
+			gutterWidth: 2
 		});
 
 		this.shuffle = this.$el.data('shuffle');
@@ -167,12 +299,26 @@ window.Shuffler = (function ($) {
 
 }(jQuery));
 
+function populateLargeLayout() {};
+
 $(document).ready(function () {
-	new window.Shuffler(document.getElementById('card-list'));
-	cardSlots = document.getElementsByClassName('card').length;
-	console.log('Cardslots: ' + cardSlots);
+	var viewWidth = window.innerWidth;
+	var smallLayout = !(viewWidth > 560);
 	initializeCards();
-	output = generateRandomCards(4);
+
+	if(!smallLayout) {
+		populateLargeLayout();
+		new window.Shuffler(document.getElementById('card-list'));
+		cardSlots = document.getElementsByClassName('card').length;
+		console.log('Cardslots: ' + cardSlots);
+	}
+	else {
+		cardSlots = cardPhrases.length;
+		setupSmallLayout();
+		setupHammer(document.querySelector('#active-card'));
+	}
+	
+	output = generateRandomCards(smallLayout);
 	insertCardHTML(output);
 	bindClickFlip();
 	bindHoverFlip();
