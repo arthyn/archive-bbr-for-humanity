@@ -20,8 +20,11 @@ $break-large: 560px;
 .green {
 	color: $green;
 }
+.ss-icon {
+	font-family: "SSStandard";
+	vertical-align: middle;
+}
 a {
-	text-decoration: none;
 	color: $text;
 }
 html,
@@ -62,6 +65,7 @@ a {
 	width: 100%;
 	height: 100%;
 	margin: 0 auto;
+	overflow: hidden;
 	main {
 		width: 100%;
 		@include row;
@@ -70,7 +74,7 @@ a {
 			padding: 2px;
 		}
 		@media screen and (max-width: $break-large - 1) {
-			height: 100%;
+			height: $card-height;
 		}
 	}
 	@media screen and (min-width: $break-large) {
@@ -101,6 +105,9 @@ nav {
 		@include align-self(center);
 		@include flex(1);
 	}
+	a {
+		text-decoration: none;
+	}
 }
 .brand > a,
 .idea > a,
@@ -117,7 +124,7 @@ nav {
 	@include clearfix;
 }
 #card-list {
-	height: $card-height;
+	height: 100%;
 }
 .animate {
 	@include transition(all .5s ease);
@@ -136,17 +143,23 @@ nav {
 	width: $card-width;
 	height: 100%;
 	margin: 0 0 3px;
+	@include transform-style(preserve-3d);
 	@media screen and (min-width: $break-large) {
 		display: inline-block;
 		width: $card-fixed-width;
 		height: $card-fixed-height;
 		@include transition(transform 1.0s ease-in);
-		@include transform-style(preserve-3d);
 	}
 	p {
 		margin: 0;
 		font-weight: bold;
 		font-size: 1.1em;
+	}
+	.hashtag {
+		font-size: .75em;
+	}
+	.long-card {
+		font-size: .8em;
 	}
 	.copy {
 		font-size: .6em;
@@ -180,23 +193,131 @@ nav {
 .card-display {
 	@include span-columns(6);
 }
+.home-card a,
+.ideas-card a {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+}
+.ideas-card a {
+	@include display(flex);
+	@include align-items(center);
+	@include justify-content(center);
+	img {
+		width: 60px;
+		height: auto;
+	}
+}
+.home-card img,
+.bbr {
+	width: 60px;
+	height: auto;
+	margin-top: 60%;
+}
+.diy-card .face,
+.diy-card .back {
+	img {
+		width: 60px;
+		height: auto;
+	}
+	div {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		@include display(flex);
+		@include align-items(center);
+		@include justify-content(center);
+	}
+}
+.info-card h3 {
+	line-height: 1;
+}
 #shuffle-button {
 	margin: 15px 0 0;
+	cursor: pointer;
+	p {
+		@include display(flex);
+		@include align-items(center);
+	}
+	img {
+		width: 24px;
+		height: auto;
+		margin-right: 5px;
+	}
 }
-.ss-like {
+.swipe-more {
+	position: absolute;
+	bottom: 8%;
+	left: 10%;
+	@include display(flex);
+	@include align-items(center);
+	@include justify-content(center);
+
+	.swipe {
+		width: 48px;
+		height: auto;
+		margin-right: 10px;
+		transform: rotateY(180deg);
+	}
+}
+.facebook_large {
+	background: url('../images/icon-FB.png');
+	background-size: cover;
+	display: inline-block;
+	height: 32px;
+	width: 32px;
+	position: relative;
+}
+.facebook_large:hover {
+	opacity: .75;
+}
+.st_twitter_large .stLarge[style] {
+	background: url('../images/icon-T.png') !important;
+	background-size: cover !important;
+}
+.st_pinterest_large .stLarge[style] {
+	background: url('../images/icon-P.png') !important;
+	background-size: cover !important;
+}
+.like {
 	font-size: 2em;
 }
-footer {
-	display: none;
-	@media screen and (min-width: $break-large) {
-		display: block;
-		width: 100%;
-		height: 30px;
-		margin-bottom: 5px;
-		border-radius: 12px;
-		background: $bg;
-		color: $text;
+.nav-card {
+	cursor: pointer;
+}
+ul.long-card {
+	padding-left: 20px;
+	li {
+		font-weight: bold;
+		margin-bottom: 10px;
 	}
+}
+ol.long-card li {
+	font-size: .75em;
+	font-weight: bold;
+}
+.author {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	font-weight: bold;
+	color: $green;
+}
+.author:before {
+	content: "—"
+}
+footer {
+	display: block;
+	width: $card-width;
+	height: 30px;
+	margin: 0 auto 5px;
+	border-radius: 12px;
+	background: $bg;
+	color: $text;
 	div {
 		margin: 0 auto;
 		padding: 7px 0;
@@ -204,5 +325,13 @@ footer {
 		font-weight: bold;
 		font-size: .75em;
 		text-align: center;
+	}
+	@media screen and (min-width: $break-large) {
+		width: 100%;
+	}
+}
+.info > span{
+	@media screen and (max-width: $break-large - 1) {
+		display: none;
 	}
 }
