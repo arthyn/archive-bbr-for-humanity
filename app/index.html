@@ -20,6 +20,8 @@
         <!-- build:css styles/vendor.css -->
         <!-- bower:css -->
         <link rel="stylesheet" href="../bower_components/normalize-css/normalize.css" />
+        <link rel="stylesheet" href="../bower_components/owlcarousel/owl-carousel/owl.carousel.css">
+        <link rel="stylesheet" href="../bower_components/owlcarousel/owl-carousel/owl.theme.css">
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css styles/ss-standard.css -->
@@ -59,20 +61,20 @@
                 <nav>
                     <ul class="main-nav">
                         <li class="brand">
-                            <a href="index.html">BBR</a>
+                            <a href="index.html" class="green">Home</a>
                         </li>
                         <li class="idea">
                             <a href="ideas.html">Ideas</a>
                         </li>
                         <li class="diy">
-                            <a href="diyforhumanity.pdf" target="_blank">DIY</a>
+                            <a href="#" onclick="layoutDIY()">DIY</a>
                         </li>
                     </ul>
                 </nav>
             </header><!-- .header -->
 
             <main>
-                <ul id="card-list" class="items shuffle">
+                <ul id="card-list" class="owl-carousel items shuffle">
                     <li id="active-card" class="card shuffle-item animate">
                         <div class="face"></div>
                         <div class="back">Test</div>
@@ -85,7 +87,7 @@
                         <div class="face"></div>
                         <div class="back">Test</div>
                     </li>
-                    <li class="card shuffle-item">
+                    <li class="card shuffle-item animate">
                         <div class="face"></div>
                         <div class="back">Test</div>
                     </li>
@@ -93,7 +95,7 @@
             </main><!-- .main -->
             <footer>
                 <div class="info">
-                    <span>&copy;2014 BBR Creative. All rights reserved. |  300 Rue Beauregard, Bldg. I, Lafayette, LA 70508 | </span>337-233-1515 |  info@bbrcreative.com
+                    <span>&copy;2014 BBR Creative. All rights reserved. |  300 Rue Beauregard, Bldg. I, Lafayette, LA 70508 | </span><a href="tel:337-233-1515" type="phone">337-233-1515</a> |  <a href="mailto:info@bbrcreative.com" type="email">info@bbrcreative.com</a>
                 </div>
             </footer><!-- .footer -->
         </div><!-- .container -->
@@ -103,6 +105,7 @@
         <script src="../bower_components/shufflejs/dist/jquery.shuffle.js"></script>
         <script src="../bower_components/html2canvas/build/html2canvas.js"></script>
         <script src="../bower_components/hammerjs/hammer.js"></script>
+        <script src="../bower_components/owlcarousel/owl-carousel/owl.carousel.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:js scripts/main.js -->
