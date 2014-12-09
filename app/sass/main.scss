@@ -198,20 +198,22 @@ ul.long-card {
 .card > div,
 #card-custom {
 	position: absolute;
-	@include backface-visibility(hidden);
 	border-radius: $card-corner;
 	padding: 10%;
 	width: 100%;
 	height: 100%;
+	z-index: 100;
+	backface-visibility: hidden;
+
 }
 .card .face {
 	background: $bg;
 	color: $text;
-	z-index: 100;
+	@include transform(scale(1));
 }
 .card .back {
-	color: $text;
-	background: $bg;
+	color: $bg;
+	background: $text;
 	@include transform(rotateY(-180deg));
 }
 .card-form {
@@ -319,7 +321,9 @@ ul.long-card {
 		margin-left: 10px;
 	}
 }
-.facebook_large {
+.facebook,
+.twitter,
+.pinterest {
 	background: url('../images/icon-FB.png');
 	background-size: cover;
 	display: inline-block;
@@ -327,16 +331,24 @@ ul.long-card {
 	width: 32px;
 	position: relative;
 }
-.facebook_large:hover {
+.facebook:hover,
+.twitter:hover,
+.pinterest:hover {
 	opacity: .75;
 }
-.st_twitter_large .stLarge[style] {
-	background: url('../images/icon-T.png') !important;
-	background-size: cover !important;
+.ideas .ideas-card .face,
+.diy-card .back,
+.info-card .face {
+	background: $text;
+	color: $bg;
 }
-.st_pinterest_large .stLarge[style] {
-	background: url('../images/icon-P.png') !important;
-	background-size: cover !important;
+.twitter {
+	background: url('../images/icon-T.png');
+	background-size: cover;
+}
+.pinterest {
+	background: url('../images/icon-P.png');
+	background-size: cover;
 }
 .like {
 	font-size: 2em;
@@ -362,6 +374,7 @@ ol.long-card li {
 	font-weight: bold;
 	color: $green;
 	text-decoration: none;
+	@include transform-style(preserve-3d);
 }
 .author:before {
 	content: "—"
@@ -372,7 +385,6 @@ footer {
 	height: 30px;
 	margin: 0 auto 5px;
 	border-radius: 12px;
-	background: $bg;
 	color: $text;
 	div {
 		margin: 0 auto;
@@ -384,6 +396,7 @@ footer {
 	}
 	@media screen and (min-width: $break-large) {
 		width: 100%;
+		background: $bg;
 	}
 }
 .info > span{
