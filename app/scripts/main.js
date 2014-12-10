@@ -80,7 +80,7 @@ function initializeCards() {
 	smallHomeCard = card({html: '<h1><span class="green">Holiday</span><br> Cards<br> for<br> Humanity</h1><div class="brand-hash"><a href="http://www.bbrcreative.com"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/forgoodnesssake/search">#ForGoodnessSake</a></p><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search">#BBRForHumanity</a></p></div><div class="swipe-more"><p>swipe for more</p><img class="swipe" src="images/icon-finger.png" alt="right"></div>', position: 1, locked: true});
 	homeCard = card({html: '<a href="index.html"><h1><span class="green">Holiday</span><br> Cards<br> for<br> Humanity</h1></a><a href="http://www.bbrcreative.com"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/forgoodnesssake/search">#ForGoodnessSake</a></p><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search">#BBRForHumanity</a></p>', position: 1, locked: true});
 	infoCard = card({html: '<h3>Our gift to you is your gift to give...</h3><p class="copy">for a job well done or to butter up your boss. Give props to your peeps, or just make someone\'s day a little brighter. Deck the halls and plaster friends\' walls by sending an e-card. Or print out your own stack and, heck, stock some stalls.</p><br><p class="copy">From the heart is where it\'s at&#8211;so spread some <span class="goodness">good for goodness\' sake.</span><br><div id="shuffle-button"><p><img src="images/icon-shuffle.png"> shuffle cards</p></div>', position: 2, locked: true});
-	ideasInfoCard = card({html: '<h3>Our gift to you is your gift to give...</h3><p class="copy">for a job well done or to butter up your boss. Give props to your peeps, or just make someone\'s day a little brighter. Deck the halls and plaster friends\' walls by sending an e-card. Or print out your own stack and, heck, stock some stalls.</p><br><p class="copy">From the heart is where it\'s at&#8211;so spread some <span class="goodness">good for goodness\' sake.</span><br><div id="shuffle-button"><p><img src="images/icon-shuffle.png"> shuffle cards</p></div>', position: (smallLayout ? 2 : 3)});
+	ideasInfoCard = card({html: '<h3>Our gift to you is your gift to give...</h3><p class="copy">for a job well done or to butter up your boss. Give props to your peeps, or just make someone\'s day a little brighter. Deck the halls and plaster friends\' walls by sending an e-card. Or print out your own stack and, heck, stock some stalls.</p><br><p class="copy">From the heart is where it\'s at&#8211;so spread some <span class="goodness">good for goodness\' sake.</span><br><div id="shuffle-button"><p><img src="images/icon-shuffle.png"> shuffle cards</p></div>', position: (smallLayout ? 2 : 3), locked: true});
 	smallIdeasCard = card({html: '<h2><span class="green">Ideas</span><br>For Humanity</h2><div><img src="images/icon-ideas.png"></div><div class="brand-hash"><a href="http://www.bbrcreative.com"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/forgoodnesssake/search">#ForGoodnessSake</a></p><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search">#BBRForHumanity</a></p></div><div class="swipe-more"><p>swipe for more</p><img class="swipe" src="images/icon-finger.png" alt="right"></div>', position: 1, locked: true});
 	ideaCard = card({html: ('<h2>Ideas<br>For Humanity</h2><a href="ideas.html"><img src="images/icon-ideas.png"></a>'), position: (page ? 2 : 3)});
 	diyCard = card({html: '<h2>DIY<br>For Humanity</h2><div><img src="images/icon-cut.png"></div>', position: 4});
@@ -466,6 +466,33 @@ function layoutCards() {
 			afterMove: updateCards
 		});
 	}
+	var cardList = $('#card-list');
+	cardList.on('layout.shuffle', function () {
+		var cards = cardList.find('.card');
+		var topPattern = /.*\stranslate3d\((0|183)px,\s0px, 0px\).*/g;
+		var homeCard = cards[0];
+		var infoCard = page ? cards[2] : cards[1];
+		var firstCard;
+		var secondCard;
+		for(var i = 0;i<cards.length;i++) {
+			var style = $(cards[i]).attr('style');
+			var match = topPattern.exec(style);
+			if(match){
+				match[1] == 0 ? firstCard = cards[i] : secondCard = cards[i];
+				console.log('Card: ' + $(cards[i]).attr('style'));
+				console.log('match: ' + match[1]);
+			}
+		}
+		var oldPosition = $(homeCard).attr('style');
+		console.log('First: ' + $(firstCard).attr('style'));
+		$(homeCard).attr('style', $(firstCard).attr('style'));
+		$(firstCard).attr('style', oldPosition);
+
+		console.log('Second: ' + $(secondCard).attr('style'));
+		oldPosition = $(infoCard).attr('style');
+		$(infoCard).attr('style', $(secondCard).attr('style'));
+		$(secondCard).attr('style', oldPosition);
+	})
 
 	bindClickFlip();
 	$('.facebook').on('click', function () {
