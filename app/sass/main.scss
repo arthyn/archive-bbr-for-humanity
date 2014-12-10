@@ -138,11 +138,8 @@ nav {
 .animate {
 	@include transition(all .5s ease);
 }
-#active-card {
-	z-index: 102;
-	position: relative;
-	top: 0;
-	left: 0;
+.active-card > div{
+	@include backface-visibility(hidden);
 }
 .card {
 	z-index: 101;
@@ -203,7 +200,10 @@ ul.long-card {
 	width: 100%;
 	height: 100%;
 	z-index: 100;
-	backface-visibility: hidden;
+	@media screen and (min-width: $break-large) {
+		@include backface-visibility(hidden);
+	}
+	
 
 }
 .card .face {
@@ -263,6 +263,9 @@ ul.long-card {
 .home-card a,
 .owl-item:first-child a {
 	text-decoration: none;
+}
+.active-card.diy-card {
+	margin-left: 9%;
 }
 .diy-card .face,
 .diy-card .back {
