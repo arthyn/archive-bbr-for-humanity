@@ -78,11 +78,11 @@ function initializeCards() {
 		$(cards[1]).addClass('nav-card');
 	}
 
-	smallHomeCard = card({html: '<h1><span class="green">Holiday</span><br> Cards<br> for<br> Humanity</h1><div class="brand-hash"><a href="http://www.bbrcreative.com"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search">#BBRForHumanity</a></p></div><div class="swipe-more"><p>swipe for more</p><img class="swipe" src="images/icon-finger.png" alt="right"></div>', position: 1, locked: true});
-	homeCard = card({html: '<a href="index.html"><h1><span class="green">Holiday</span><br> Cards<br> for<br> Humanity</h1></a><a href="http://www.bbrcreative.com"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search">#BBRForHumanity</a></p>', position: 1, locked: true});
+	smallHomeCard = card({html: '<h1><span class="green">Holiday</span><br> Cards<br> for<br> Humanity</h1><div class="brand-hash"><a href="http://www.bbrcreative.com" target="_blank"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search" target="_blank">#BBRforHumanity</a></p></div><div class="swipe-more"><p>swipe for more</p><img class="swipe" src="images/icon-finger.png" alt="right"></div>', position: 1, locked: true});
+	homeCard = card({html: '<a href="index.html"><h1><span class="green">Holiday</span><br> Cards<br> for<br> Humanity</h1></a><a href="http://www.bbrcreative.com" target="_blank"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search" target="_blank">#BBRforHumanity</a></p>', position: 1, locked: true});
 	infoCard = card({html: '<h3>Our gift to you is your gift to give...</h3><p class="copy">for a job well done, to butter up your boss or to make someone\'s day a little brighter. Deck the halls and plaster friends\' walls by sending an e-card.</p><br><p class="copy">From the heart is where it\'s at&#8211;so spread some <span class="goodness">good for goodness\' sake.</span><br><div id="shuffle-button"><p><img src="images/icon-shuffle.png"> more cards</p></div>', position: 2, locked: true});
 	ideasInfoCard = card({html: '<p class="idea-copy">It takes just one idea to change the world. So here are 26 simple gestures from the BBR team. (Click a name to view their profile.)</p><br><div id="shuffle-button"><p><img src="images/icon-shuffle.png"> more cards</p></div>', position: (smallLayout ? 2 : 3), locked: true});
-	smallIdeasCard = card({html: '<h2><span class="green">Ideas</span><br>For Humanity</h2><div><img src="images/icon-ideas.png"></div><div class="brand-hash"><a href="http://www.bbrcreative.com"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/forgoodnesssake/search">#ForGoodnessSake</a></p><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search">#BBRForHumanity</a></p></div><div class="swipe-more"><p>swipe for more</p><img class="swipe" src="images/icon-finger.png" alt="right"></div>', position: 1, locked: true});
+	smallIdeasCard = card({html: '<h2><span class="green">Ideas</span><br>For Humanity</h2><div><img src="images/icon-ideas.png"></div><div class="brand-hash"><a href="http://www.bbrcreative.com"><img class="bbr" src="images/icon-bbr.png"></a><p class="hashtag"><a href="https://tagboard.com/forgoodnesssake/search">#ForGoodnessSake</a></p><p class="hashtag"><a href="https://tagboard.com/bbrforhumanity/search">#BBRforHumanity</a></p></div><div class="swipe-more"><p>swipe for more</p><img class="swipe" src="images/icon-finger.png" alt="right"></div>', position: 1, locked: true});
 	ideaCard = card({html: ('<h2>Ideas<br>For Humanity</h2><a href="ideas.html"><img src="images/icon-ideas.png"></a>'), position: (page ? 2 : 3)});
 	diyCard = card({html: '<h2>DIY<br>For Humanity</h2><div><img src="images/icon-cut.png"></div>', position: 4});
 }
@@ -144,7 +144,7 @@ function insertCardHTML(source, load) {
 		if(load) {
 			$(backs[i]).empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://bbrforhumanity.com/images/' + number + '.png" displayText="Facebook"></span><a href="https://twitter.com/home?status=Make%20someone%27s%20day%20brighter%20with%20Holiday%20Cards%20for%20Humanity%20http://bbrforhumanity.com%20%23BBRforHumanity%20%23ForGoodnessSake%20" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>');
 			if(i === 3 && !smallLayout){
-				$(backs[i]).empty().append('<p>Click to download a printable deck.</p><div><a href="diyforhumanity.pdf" target="_blank"><img src="images/icon-print.png"></a></div>');
+				$(backs[i]).empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" target="_blank"><img src="images/icon-print.png"></a></div>');
 			}
 		}
 	}
@@ -229,8 +229,14 @@ function populateLayout(smallLayout, page) {
 };
 
 function bindClickFlip() {
-	$('.card').not($('.nav-card')).on('click', function() {
-		
+	var cards;
+	if(page) {
+		cards = $('.card.diy-card');
+	}
+	else {
+		cards = $('.card').not($('.nav-card'));
+	}
+	$(cards).on('click', function() {
 		var nop3d = $('html').hasClass('no-transformstylepreserve3d');
 		//console.log(nop3d);
 		var currentStyles = nop3d ? $(this).children('.back').css('transform') : $(this).attr('style') || '';
@@ -270,7 +276,14 @@ function bindClickFlip() {
 }
 
 function bindHoverFlip() {
-	$('.card').not($('.nav-card')).hover(function () {
+	var cards;
+	if(page) {
+		cards = $('.card.diy-card');
+	}
+	else {
+		cards = $('.card').not($('.nav-card'));
+	}
+	$(cards).hover(function () {
 			var currentStyles = $(this).attr('style');
 			var newStyles = currentStyles.replace('scale3d(1, 1, 1);', 'scale3d(1, 1, 1) rotateY(20deg);');
 			$(this).attr('style', newStyles);
@@ -400,7 +413,7 @@ function layoutDIY() {
 	$('.diy a').addClass('green');
 	var html = diyCard.getHTML().replace('DIY', '<span class="green">DIY</span>');
 	$(card).find('.face').empty().append(html);
-	$(card).find('.back').empty().append('<p>Click to download a printable deck.</p><div><a href="diyforhumanity.pdf" target="_blank"><img src="images/icon-print.png"></a></div>');
+	$(card).find('.back').empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" target="_blank"><img src="images/icon-print.png"></a></div>');
 	$(card).addClass('active-card');
 	$('.owl-wrapper').append(card);
 	var owl = $('.owl-carousel').data('owlCarousel');
@@ -503,9 +516,7 @@ function layoutCards() {
 
 	if(!smallLayout) {
 		new window.Shuffler(document.getElementById('card-list'));
-		if(!page) {
-			bindHoverFlip();
-		}
+		bindHoverFlip();
 	}
 	else{
 		//console.log("owl");
@@ -627,9 +638,8 @@ function layoutCards() {
 			}
 		}, 100);
 	});
-	if(!page) {
-		bindClickFlip();
-	}
+
+	bindClickFlip();
 	$('.facebook').on('click', function () {
 		//console.log('click event');
 		sendToFB(this);
