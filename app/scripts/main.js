@@ -182,8 +182,8 @@ function sendToFB(element) {
 		method: 'feed',
 		link: 'http://bbrforhumanity.com',
 		redirect_uri: 'http://bbrforhumanity.com',
-		caption: 'Good for goodness sake.',
-		description: 'Holiday Cards For Humanity',
+		caption: 'Holiday Cards for Humanity',
+		description: 'Our gift to you is your gift to give...for a job well done, to butter up your boss or to make someone\'s day a little brighter. Deck the halls and plaster friends\' walls by sending an e-card. From the heart is where it\'s at–so spread some good for goodness\' sake.',
 		picture: pictureURL,
 	}, function(response) {});
 }
@@ -340,6 +340,10 @@ window.Shuffler = (function ($) {
 	Shuffler.prototype.onShuffle = function () {
 		outputCards = generateRandomCards(smallLayout, page);
 		insertCardHTML(outputCards, true);
+		$('.facebook').on('click', function () {
+			//console.log('click event');
+			sendToFB(this);
+		});
 		this.$el.shuffle('sort', {randomize: true});
 		$('#shuffle-button').on('click', $.proxy(this.onShuffle, this));
 	};
