@@ -142,7 +142,7 @@ function insertCardHTML(source, load) {
 		var number = source[i+1].getImageNumber();
 		$(cards[i]).empty().append(source[i+1].getHTML());
 		if(load) {
-			$(backs[i]).empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://www.bbrforhumanity.bbrcreativehost.com/images/' + number + '.png" displayText="Facebook"></span><a href="https://twitter.com/home?status=Make%20someone%27s%20day%20brighter%20with%20Holiday%20Cards%20for%20Humanity%20http://bbrforhumanity.com%20%23BBRforHumanity%20%23ForGoodnessSake%20" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://www.bbrforhumanity.bbrcreativehost.com&media=http://www.bbrforhumanity.bbrcreativehost.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>');
+			$(backs[i]).empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://www.bbrforhumanity.com/images/' + number + '.png" displayText="Facebook"></span><a href="https://twitter.com/home?status=Make%20someone%27s%20day%20brighter%20with%20Holiday%20Cards%20for%20Humanity%20http://bbrforhumanity.com%20%23BBRforHumanity%20%23ForGoodnessSake%20" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://www.bbrforhumanity.com&media=http://www.bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>');
 			if(i === 3 && !smallLayout){
 				$(backs[i]).empty().append('<p>Click to download a printable deck.</p><div><a href="diyforhumanity.pdf" target="_blank"><img src="images/icon-print.png"></a></div>');
 			}
@@ -158,7 +158,7 @@ function insertCard(position){
 	var card = cards[4].cloneNode(true);
 
 	$(card).find('.face').empty().append(outputCards[position].getHTML());
-	$(card).find('.back').empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://www.bbrforhumanity.bbrcreativehost.com/images/' + outputCards[position].getImageNumber() + '.png" displayText="Facebook"></span><a href="https://twitter.com/home?status=Make%20someone%27s%20day%20brighter%20with%20Holiday%20Cards%20for%20Humanity%20http://bbrforhumanity.com%20%23BBRforHumanity%20%23ForGoodnessSake%20" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://www.bbrforhumanity.bbrcreativehost.com&media=http://www.bbrforhumanity.bbrcreativehost.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>')
+	$(card).find('.back').empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://www.bbrforhumanity.com/images/' + outputCards[position].getImageNumber() + '.png" displayText="Facebook"></span><a href="https://twitter.com/home?status=Make%20someone%27s%20day%20brighter%20with%20Holiday%20Cards%20for%20Humanity%20http://bbrforhumanity.com%20%23BBRforHumanity%20%23ForGoodnessSake%20" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://www.bbrforhumanity.com&media=http://www.bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>')
 
 	return card;
 }
@@ -180,8 +180,8 @@ function sendToFB(element) {
 	//console.log('sending to facebook'); 
 	FB.ui({
 		method: 'feed',
-		link: 'http://www.bbrforhumanity.bbrcreativehost.com',
-		redirect_uri: 'http://www.bbrforhumanity.bbrcreativehost.com',
+		link: 'http://www.bbrforhumanity.com',
+		redirect_uri: 'http://www.bbrforhumanity.com',
 		caption: 'Good for goodness sake.',
 		description: 'Holiday Cards For Humanity',
 		picture: pictureURL,
