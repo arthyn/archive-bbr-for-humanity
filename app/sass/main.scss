@@ -7,6 +7,7 @@
 $bg: #000;
 $text: #fff;
 $green: #A0C33B;
+$gray: #555;
 
 //Dimensions
 $min-space: 5px;
@@ -38,7 +39,7 @@ body {
 	font-smoothing: antialiased;
 	-webkit-font-smoothing: antialiased;
 	font-family: $helvetica;
-	background-color: #555;
+	background-color: $gray;
 	@include perspective(1200px);
 }
 h1, h2, h3 {
@@ -138,13 +139,16 @@ nav {
 .animate {
 	@include transition(all .5s ease);
 }
+.active-card {
+	display: block !important;
+}
 .active-card > div{
 	@include backface-visibility(hidden);
 }
 .card {
 	z-index: 101;
 	list-style: none;
-	display: block;
+	display: none;
 	@include clearfix;
 	width: $card-width;
 	height: 100%;
@@ -170,7 +174,7 @@ nav {
 	.long-card {
 		font-size: 1.2em;
 		@media screen and (min-width: $break-large){
-			font-size: .8em;
+			font-size: .9em;
 		}
 	}
 	.extra-long-card {
@@ -182,7 +186,7 @@ nav {
 	.copy {
 		font-size: .9em;
 		@media screen and (min-width: $break-large){
-			font-size: .67em;
+			font-size: .7em;
 		}
 	}
 	.goodness {
@@ -388,7 +392,7 @@ footer {
 	height: 30px;
 	margin: 0 auto 5px;
 	border-radius: 12px;
-	color: $text;
+	color: $gray;
 	div {
 		margin: 0 auto;
 		padding: 7px 0;
@@ -396,6 +400,13 @@ footer {
 		font-weight: bold;
 		font-size: .75em;
 		text-align: center;
+		@media screen and (min-width: $break-large) {
+			color: #777;
+			a {
+				color: #777;
+			}
+		}
+		
 	}
 	@media screen and (min-width: $break-large) {
 		width: 100%;

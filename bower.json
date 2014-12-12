@@ -10,11 +10,8 @@
     "jquery": "~1.11.0",
     "bitters": "~0.10.1",
     "shufflejs": "~2.1.1",
-    "html2canvas": "~0.4.1",
-    "hammerjs": "~2.0.4"
+    "owlcarousel": "~1.3.2",
+    "owl-carousel": "~1.3.2"
   },
-  "devDependencies": {
-    "html2canvas": "~0.4.1",
-    "owlcarousel": "~1.3.2"
-  }
+  "devDependencies": {}
 }
