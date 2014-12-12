@@ -394,6 +394,7 @@ function layoutDIY() {
 	var card = cards[0].cloneNode(true);
 	$(cards).remove();
 	$(card).find('.card').addClass('diy-card');
+	$(card).find('.card').removeClass('nav-card');
 	$('.brand .green').removeClass('green');
 	$('.idea .green').removeClass('green');
 	$('.diy a').addClass('green');
@@ -417,8 +418,8 @@ function layoutDIY() {
 function changeCardPositions(old, newCard, pos) {
 	if(old !== newCard) {
 		var oldPosition = $(old).attr('style');
-		console.log("Old: " + oldPosition);
-		console.log('New: ' + $(newCard).find('.face').html());
+		//console.log("Old: " + oldPosition);
+		//console.log('New: ' + $(newCard).find('.face').html());
 		$(old).attr('style', $(newCard).attr('style'))
 		//$(old).attr('style', 'position: absolute; top: 0px; left: 0px; opacity: 1; transform: translate3d(' + pos + 'px, 0px, 0px) scale3d(1, 1, 1); visibility: visible; transition: transform 400ms ease, opacity 400ms ease; -webkit-transition: transform 400ms ease, opacity 400ms ease;');
 		$(newCard).attr('style', oldPosition);
@@ -470,7 +471,7 @@ function moveDuplicate(dupModel) {
 	for(var j = 0;j<Object.keys(layoutModel).length;j++) {
 		for(var i = 0;i<Object.keys(layoutModel[j]).length;i++) {
 			if(!dupModel[j][i]) {
-				console.log("Moving dup x: " + j + "y: " + i);
+				//console.log("Moving dup x: " + j + "y: " + i);
 				$(dupModel.duplicate).attr('style', 'position: absolute; top: 0px; left: 0px; opacity: 1; transform: translate3d(' + (j * 183) + 'px, ' + (i * 303) + 'px, 0px) scale3d(1, 1, 1); visibility: visible; transition: transform 400ms ease, opacity 400ms ease; -webkit-transition: transform 400ms ease, opacity 400ms ease;');
 				dupModel[j][i] = dupModel.duplicate;
 				column = j;
@@ -502,7 +503,9 @@ function layoutCards() {
 
 	if(!smallLayout) {
 		new window.Shuffler(document.getElementById('card-list'));
-		bindHoverFlip();
+		if(!page) {
+			bindHoverFlip();
+		}
 	}
 	else{
 		//console.log("owl");
@@ -529,20 +532,20 @@ function layoutCards() {
 			var secondCard;
 			for(var i = 0;i<cards.length;i++) {
 				var pos = findPos(cards[i]);
-				console.log(i);
-				console.log($(cards[i]).attr('style'));
-				console.log(pos + '');
+				//console.log(i);
+				//console.log($(cards[i]).attr('style'));
+				//console.log(pos + '');
 				if(pos){
-					console.log('x: ' + pos.column + ' y: ' + pos.row);
+					//console.log('x: ' + pos.column + ' y: ' + pos.row);
 					if(pos.column === 0 && pos.row === 0){
 						firstCard = cards[i];
-						console.log('Card: ' + $(cards[i]).find('.face').html());
-						console.log('match: ' + pos.column);
+						//console.log('Card: ' + $(cards[i]).find('.face').html());
+						//console.log('match: ' + pos.column);
 					}
 					else if(pos.column === 1 && pos.row === 0) {
 						secondCard = cards[i];
-						console.log('Card: ' + $(cards[i]).find('.face').html());
-						console.log('match: ' + pos.column);
+						//console.log('Card: ' + $(cards[i]).find('.face').html());
+						//console.log('match: ' + pos.column);
 					}
 					
 					if(duplicateTracker[pos.column][pos.row]) {
@@ -553,35 +556,35 @@ function layoutCards() {
 						else if($(cards[i]).hasClass('home-card')){
 							duplicateTracker['home'] = true;
 						}
-						console.log('Duplicate: ' + $(cards[i]).find('.face').html());
+						//console.log('Duplicate: ' + $(cards[i]).find('.face').html());
 					}
 					else {
 						duplicateTracker[pos.column][pos.row] = cards[i];
 					}
 				}
 			}
-			console.log(duplicateTracker);
+			//console.log(duplicateTracker);
 			var homeCard = $('.home-card');
-			console.log($(homeCard).attr('style'));
+			//console.log($(homeCard).attr('style'));
 			var infoCard = $('.info-card');
-			console.log($(infoCard).attr('style'));
+			//console.log($(infoCard).attr('style'));
 			if($(homeCard).attr('style') === $(secondCard).attr('style')){
-				console.log('Swap info first.');
+				//console.log('Swap info first.');
 				changeCardPositions(infoCard, secondCard, 183);
 				changeCardPositions(homeCard, firstCard, 0);
 			}
 			else {
-				console.log('Swap home first.');
+				//console.log('Swap home first.');
 				changeCardPositions(homeCard, firstCard, 0);
 				changeCardPositions(infoCard, secondCard, 183);
 			}
 
 			if(duplicateTracker.duplicate) {
-				console.log('Entering dup');
+				//console.log('Entering dup');
 				var infoPos = findPos(infoCard);
-				console.log('info x: ' + infoPos.column + ' y: ' + infoPos.row);
+				//console.log('info x: ' + infoPos.column + ' y: ' + infoPos.row);
 				var homePos = findPos(homeCard);
-				console.log('home x: ' + homePos.column + ' y: ' + homePos.row);
+				//console.log('home x: ' + homePos.column + ' y: ' + homePos.row);
 				pos = findPos(duplicateTracker.duplicate);
 				
 				if(pos.column === 0 && pos.row === 0) {
@@ -624,8 +627,9 @@ function layoutCards() {
 			}
 		}, 100);
 	});
-
-	bindClickFlip();
+	if(!page) {
+		bindClickFlip();
+	}
 	$('.facebook').on('click', function () {
 		//console.log('click event');
 		sendToFB(this);
