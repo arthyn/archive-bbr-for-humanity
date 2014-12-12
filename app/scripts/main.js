@@ -339,7 +339,7 @@ window.Shuffler = (function ($) {
 
 	Shuffler.prototype.onShuffle = function () {
 		outputCards = generateRandomCards(smallLayout, page);
-		insertCardHTML(outputCards, false);
+		insertCardHTML(outputCards, true);
 		this.$el.shuffle('sort', {randomize: true});
 		$('#shuffle-button').on('click', $.proxy(this.onShuffle, this));
 	};
