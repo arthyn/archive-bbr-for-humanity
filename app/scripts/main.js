@@ -149,7 +149,7 @@ function insertCardHTML(source, load) {
 		if(load) {
 			$(backs[i]).empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://bbrforhumanity.com/images/' + number + '.png" displayText="Facebook"></span><a href="' + twitterURL + '" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>');
 			if(i === 3 && !smallLayout){
-				$(backs[i]).empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" target="_blank"><img src="images/icon-print.png"></a></div>');
+				$(backs[i]).empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" onclick="_gaq.push(["_trackEvent", "Resources", "Download"]);" target="_blank"><img src="images/icon-print.png"></a></div>');
 			}
 		}
 	}
@@ -425,7 +425,7 @@ function layoutDIY() {
 	$('.diy a').addClass('green');
 	var html = diyCard.getHTML().replace('DIY', '<span class="green">DIY</span>');
 	$(card).find('.face').empty().append(html);
-	$(card).find('.back').empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" target="_blank"><img src="images/icon-print.png"></a></div>');
+	$(card).find('.back').empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" onclick="_gaq.push(["_trackEvent", "Resources", "Download"]);" target="_blank"><img src="images/icon-print.png"></a></div>');
 	$(card).addClass('active-card');
 	$('.owl-wrapper').append(card);
 	var owl = $('.owl-carousel').data('owlCarousel');
