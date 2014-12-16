@@ -421,7 +421,9 @@ function layoutDIY() {
 	var cards = $('.owl-item');
 	var card = cards[0].cloneNode(true);
 	$(cards).remove();
+	console.log(card);
 	$(card).find('.card').addClass('diy-card');
+	$(card).find('.card').addClass('active-card');
 	$(card).find('.card').removeClass('nav-card');
 	$('.brand .green').removeClass('green');
 	$('.idea .green').removeClass('green');
@@ -429,17 +431,18 @@ function layoutDIY() {
 	var html = diyCard.getHTML().replace('DIY', '<span class="green">DIY</span>');
 	$(card).find('.face').empty().append(html);
 	$(card).find('.back').empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" onclick="ga(\'send\', \'event\', \'Resources\', \'Download\');" target="_blank"><img src="images/icon-print.png"></a></div>');
-	$(card).addClass('active-card');
-	$('.owl-wrapper').append(card);
 	var owl = $('.owl-carousel').data('owlCarousel');
-	owl.reinit({
-			singleitem: true,
-			slideSpeed: 150,
-			paginationSpeed: 200,
-			pagination: false,
-			rewindNav: true,
-			touchDrag: false
-		});
+	if(owl.options.touchDrag){
+		owl.reinit({
+				singleitem: true,
+				slideSpeed: 150,
+				paginationSpeed: 200,
+				pagination: false,
+				rewindNav: true,
+				touchDrag: false
+			});
+	}
+	$('.owl-wrapper').append(card);
 	bindClickFlip();
 }
 
