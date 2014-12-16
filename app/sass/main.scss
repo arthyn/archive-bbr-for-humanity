@@ -119,6 +119,13 @@ nav {
 		text-decoration: none;
 	}
 }
+.no-flexbox .main-nav {
+	text-align: center;
+	> li {
+		display: inline-block;
+		margin-right: 20px;
+	}
+}
 .brand > a,
 .idea > a,
 .diy > a {

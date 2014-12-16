@@ -662,5 +662,13 @@ $(document).ready(function () {
 });
 
 $(document).on('resize', function () {
+	console.log(smallLayout);
+	console.log(window.innerWidth);
+	if(smallLayout && window.innerWidth > 560) {
+		if($('.owl-item').width() !== 200) {
+			$('.owl-item').css('width', '200px');
+		}
+		console.log("Changing width 200");
+	}
 	setTimeout(buildModel(), 300);
-})
+});
