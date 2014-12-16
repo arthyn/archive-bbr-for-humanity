@@ -156,9 +156,10 @@ function insertCardHTML(source, load) {
 function insertCard(position){
 	var cards = $('.card');
 	var card = cards[4].cloneNode(true);
-
+	var num = outputCards[position].getImageNumber();
+	var twitterURL = 'https://twitter.com/home?status=' + '';
 	$(card).find('.face').empty().append(outputCards[position].getHTML());
-	$(card).find('.back').empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://bbrforhumanity.com/images/' + outputCards[position].getImageNumber() + '.png" displayText="Facebook"></span><a href="https://twitter.com/home?status=Make%20someone%27s%20day%20brighter%20with%20Holiday%20Cards%20for%20Humanity%20http://bbrforhumanity.com%20%23BBRforHumanity%20%23ForGoodnessSake%20" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>')
+	$(card).find('.back').empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://bbrforhumanity.com/images/' + num + '.png" displayText="Facebook"></span><a href="https://twitter.com/home?status=Make%20someone%27s%20day%20brighter%20with%20Holiday%20Cards%20for%20Humanity%20http://bbrforhumanity.com%20%23BBRforHumanity%20%23ForGoodnessSake%20" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>')
 
 	return card;
 }
