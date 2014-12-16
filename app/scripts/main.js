@@ -144,12 +144,12 @@ function insertCardHTML(source, load) {
 		var twitterURL = 'https://twitter.com/home?status=' + encodeURIComponent(decodeString).replace(/'/g, escape) + '%20http://bbrforhumanity.com%20%23BBRforHumanity&source=webclient';
 		if(number-1 === 14) {twitterURL = 'https://twitter.com/home?status=I%27d%20Facebook%20like%20you%20in%20real%20life.%20http://bbrforhumanity.com%20%23BBRforHumanity&source=webclient';}
 		else if(number-1 === 4){twitterURL = 'https://twitter.com/home?status=' + encodeURIComponent(decodeString.replace(/star/g, '★')).replace(/'/g, escape) + '%20http://bbrforhumanity.com%20%23BBRforHumanity&source=webclient';}
-		console.log(decodeString);
+		//console.log(decodeString);
 		$(cards[i]).empty().append(source[i+1].getHTML());
 		if(load) {
 			$(backs[i]).empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://bbrforhumanity.com/images/' + number + '.png" displayText="Facebook"></span><a href="' + twitterURL + '" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>');
 			if(i === 3 && !smallLayout){
-				$(backs[i]).empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" onclick="_gaq.push(["_trackEvent", "Resources", "Download"]);" target="_blank"><img src="images/icon-print.png"></a></div>');
+				$(backs[i]).empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" onclick="_gaq.push([\'_trackEvent\', \'Resources\', \'Download\']);" target="_blank"><img src="images/icon-print.png"></a></div>');
 			}
 		}
 	}
@@ -164,7 +164,6 @@ function insertCard(position){
 	var num = outputCards[position].getImageNumber();
 	var decodeString = cardPhrases[num].replace(/(<([^>]+)>)/ig, ' ');
 	var twitterURL = 'https://twitter.com/home?status=' + encodeURI(decodeString).replace(/'/g, escape);
-	console.log()
 	$(card).find('.face').empty().append(outputCards[position].getHTML());
 	$(card).find('.back').empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://bbrforhumanity.com/images/' + num + '.png" displayText="Facebook"></span><a href="https://twitter.com/home?status=Make%20someone%27s%20day%20brighter%20with%20Holiday%20Cards%20for%20Humanity%20http://bbrforhumanity.com%20%23BBRforHumanity%20%23ForGoodnessSake%20" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>')
 
@@ -250,9 +249,9 @@ function bindClickFlip() {
 		var currentStyles = nop3d ? $(this).children('.back').css('transform') : $(this).attr('style') || '';
 		var newStyles = '';
 		var rotated = /.*\s-*rotateY\(180deg\);\s.*/;
-		console.log(currentStyles);
-		console.log("Match: " + currentStyles.match(rotated));
-		console.log("Matrix: " + (currentStyles == 'matrix3d(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1)'));
+		//console.log(currentStyles);
+		//console.log("Match: " + currentStyles.match(rotated));
+		//console.log("Matrix: " + (currentStyles == 'matrix3d(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1)'));
 		if(currentStyles.match(rotated) || currentStyles == 'matrix3d(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1)') {
 			if(nop3d) {
 				$(this).children('.face').css('display', 'none');
@@ -662,13 +661,13 @@ $(document).ready(function () {
 });
 
 $(document).on('resize', function () {
-	console.log(smallLayout);
+	/*console.log(smallLayout);
 	console.log(window.innerWidth);
 	if(smallLayout && window.innerWidth > 560) {
 		if($('.owl-item').width() !== 200) {
 			$('.owl-item').css('width', '200px');
 		}
 		console.log("Changing width 200");
-	}
+	}*/
 	setTimeout(buildModel(), 300);
 });
