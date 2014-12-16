@@ -142,9 +142,9 @@ function insertCardHTML(source, load) {
 		var number = source[i+1].getImageNumber();
 		if(!page) {
 			var decodeString = cardPhrases[number-1].replace(/(<([^>]+)>)/ig, ' ');
-			var twitterURL = 'https://twitter.com/home?status=' + encodeURIComponent(decodeString).replace(/'/g, escape) + '%20http://bbrforhumanity.com%20%23BBRforHumanity&source=webclient';
-			if(number-1 === 14) {twitterURL = 'https://twitter.com/home?status=I%27d%20Facebook%20like%20you%20in%20real%20life.%20http://bbrforhumanity.com%20%23BBRforHumanity&source=webclient';}
-			else if(number-1 === 4){twitterURL = 'https://twitter.com/home?status=' + encodeURIComponent(decodeString.replace(/star/g, '★')).replace(/'/g, escape) + '%20http://bbrforhumanity.com%20%23BBRforHumanity&source=webclient';}
+			var twitterURL = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(decodeString).replace(/'/g, escape) + '%20http://bbrforhumanity.com%20&hashtags=BBRforHumanity';
+			if(number-1 === 14) {twitterURL = 'https://twitter.com/intent/tweet?text=I%27d%20Facebook%20like%20you%20in%20real%20life.%20http://bbrforhumanity.com%20&hashtags=BBRforHumanity';}
+			else if(number-1 === 4){twitterURL = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(decodeString.replace(/star/g, '★')).replace(/'/g, escape) + '%20http://bbrforhumanity.com%20&hashtags=BBRforHumanity';}
 		}
 		//console.log(decodeString);
 		$(cards[i]).empty().append(source[i+1].getHTML());
