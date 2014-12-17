@@ -18,6 +18,11 @@ var page;
 var outputCards = {};
 var widthInCards;
 var layoutModel = {};
+var IS_IPAD = navigator.userAgent.match(/iPad/i) != null,
+    IS_IPHONE = !IS_IPAD && ((navigator.userAgent.match(/iPhone/i) != null) || (navigator.userAgent.match(/iPod/i) != null)),
+    IS_IOS = IS_IPAD || IS_IPHONE,
+    IS_ANDROID = !IS_IOS && navigator.userAgent.match(/android/i) != null,
+    IS_MOBILE = IS_IOS || IS_ANDROID;
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -142,15 +147,42 @@ function insertCardHTML(source, load) {
 		var number = source[i+1].getImageNumber();
 		if(!page) {
 			var decodeString = cardPhrases[number-1].replace(/(<([^>]+)>)/ig, ' ');
-			var twitterURL = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(decodeString).replace(/'/g, escape) + '%20http://bbrforhumanity.com%20&hashtags=BBRforHumanity';
-			if(number-1 === 14) {twitterURL = 'https://twitter.com/intent/tweet?text=I%27d%20Facebook%20like%20you%20in%20real%20life.%20http://bbrforhumanity.com%20&hashtags=BBRforHumanity';}
-			else if(number-1 === 4){twitterURL = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(decodeString.replace(/star/g, '★')).replace(/'/g, escape) + '%20http://bbrforhumanity.com%20&hashtags=BBRforHumanity';}
+			var twitterURL = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(decodeString).replace(/'/g, escape) + '%20http%3A%2F%2Fbbrforhumanity.com%20&hashtags=BBRforHumanity';
+			if(number-1 === 14) {twitterURL = 'https://twitter.com/intent/tweet?text=I%27d%20Facebook%20like%20you%20in%20real%20life.%20http%3A%2F%2Fbbrforhumanity.com%20&hashtags=BBRforHumanity';}
+			else if(number-1 === 4){twitterURL = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(decodeString.replace(/star/g, '★')).replace(/'/g, escape) + '%20http%3A%2F%2Fbbrforhumanity.com%20&hashtags=BBRforHumanity';}
+			var twitterApp = twitterURL.replace('https://twitter.com/intent/tweet?text=', 'twitter://post?message=');
+			var twitterIntent = twitterURL.replace('https://twitter.com/intent/tweet?text=', 'intent://post?message=') + '#Intent;package=com.twitter.android;scheme=twitter;end;';
+			if(IS_IOS) {
+				twitterApp = twitterApp.replace('&hashtags=', '%23');
+			}
 		}
 		//console.log(decodeString);
 		$(cards[i]).empty().append(source[i+1].getHTML());
 		if(load) {
 			if(!page){
-				$(backs[i]).empty().append('<h2>Share</h2><div class="social"><span class="facebook" st_image="http://bbrforhumanity.com/images/' + number + '.png" displayText="Facebook"></span><a href="' + twitterURL + '" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>');
+				if(smallLayout) {
+					$(backs[i]).empty().append('<h2>Share</h2><div class="social"><a href="#" class="facebook" st_image="http://bbrforhumanity.com/images/' + number + '.png" displayText="Facebook"></a><a href="#" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>');
+					if(IS_IOS) {
+						$(backs[i]).find('.twitter').on('click', (function(twitterURL, twitterApp){
+							return function() {
+								deepLinkIOS(twitterURL, twitterApp);
+							};
+						})(twitterURL, twitterApp));
+					}
+					else if(IS_ANDROID) {
+						$(backs[i]).find('.twitter').on('click', (function(twitterURL, twitterApp, twitterIntent){
+							return function() {
+								deepLinkAndroid(twitterURL, twitterApp, twitterIntent);
+							};
+						})(twitterURL, twitterApp, twitterIntent));
+					}
+					else {
+						$(backs[i]).find('.twitter').attr('href', twitterURL)
+					}
+				}
+				else {
+					$(backs[i]).empty().append('<h2>Share</h2><div class="social"><a href="#" class="facebook" st_image="http://bbrforhumanity.com/images/' + number + '.png" displayText="Facebook"></a><a href="' + twitterURL +'" class="twitter" displayText="Twitter" target="_blank"></a><a href="https://pinterest.com/pin/create/button/?url=http://bbrforhumanity.com&media=http://bbrforhumanity.com/images/1.png&description=Good%20for%20goodness%20sake!" class="pinterest" displayText="Pinterest" target="_blank"></a></div>');
+				}
 			}
 			if(i === 3 && !smallLayout){
 				$(backs[i]).empty().append('<p>Click to download a printable deck.</p><div><a href="BBRCardsForHumanity.pdf" onclick="ga(\'send\', \'event\', \'Resources\', \'Download\');" target="_blank"><img src="images/icon-print.png"></a></div>');
@@ -191,12 +223,115 @@ function sendToFB(element) {
 	//console.log('sending to facebook'); 
 	FB.ui({
 		method: 'feed',
-		link: 'http://bbrforhumanity.com',
-		redirect_uri: 'http://bbrforhumanity.com',
+		link: 'http://bbrforhumanity.com',  
 		caption: 'Holiday Cards for Humanity',
-		description: 'Our gift to you is your gift to give...for a job well done, to butter up your boss or to make someone\'s day a little brighter. Deck the halls and plaster friends\' walls by sending an e-card. From the heart is where it\'s at–so spread some good for goodness\' sake.',
 		picture: pictureURL,
 	}, function(response) {});
+}
+
+function deepLinkIOS(url, appLink){
+	var timer;
+    var heartbeat;
+    var lastInterval;
+
+    function clearTimers() {
+        clearTimeout(timer);
+        clearTimeout(heartbeat);
+    }
+
+    window.addEventListener("pageshow", function(evt){
+        clearTimers();
+    }, false);
+
+    window.addEventListener("pagehide", function(evt){
+        clearTimers();
+    }, false);
+
+    function getTime() {
+        return (new Date()).getTime();
+    }
+
+    // For all other browsers except Safari (which do not support pageshow and pagehide properly)
+    function intervalHeartbeat() {
+        var now = getTime();
+        var diff = now - lastInterval - 200;
+        lastInterval = now;
+        if(diff > 800) { // don't trigger on small stutters less than 1000ms
+            clearTimers();
+        }
+    }
+
+    function launch_app_or_alt_url() {
+        lastInterval = getTime();
+        heartbeat = setInterval(intervalHeartbeat, 200);
+        $('<iframe />').attr('src', appLink).attr('style', 'display:none;').appendTo('body');
+        timer = setTimeout(function () {
+            document.location = url;
+        }, 800);
+    }
+
+    
+    launch_app_or_alt_url();
+    event.preventDefault();
+
+}
+
+function deepLinkAndroid(url, appLink, intent){
+    var timer;
+    var heartbeat;
+    var iframe_timer;
+
+    function clearTimers() {
+        clearTimeout(timer);
+        clearTimeout(heartbeat);
+        clearTimeout(iframe_timer);
+    }
+
+    function intervalHeartbeat() {
+        if (document.webkitHidden || document.hidden) {
+            clearTimers();
+        }
+    }
+
+    function tryIframeApproach() {
+        var iframe = document.createElement("iframe");
+        iframe.style.border = "none";
+        iframe.style.width = "1px";
+        iframe.style.height = "1px";
+        iframe.onload = function () {
+            document.location = url;
+        };
+        iframe.src = appLink;
+        document.body.appendChild(iframe);
+    }
+
+    function tryWebkitApproach() {
+        document.location = appLink;
+        timer = setTimeout(function () {
+            document.location = url;
+        }, 2500);
+    }
+
+    function useIntent() {
+        document.location = intent;
+    }
+
+    function launch_app_or_alt_url() {
+        heartbeat = setInterval(intervalHeartbeat, 200);
+        if (navigator.userAgent.match(/Chrome/)) {
+            useIntent();
+        } else if (navigator.userAgent.match(/Firefox/)) {
+            tryWebkitApproach();
+            iframe_timer = setTimeout(function () {
+                tryIframeApproach();
+            }, 1500);
+        } else {
+            tryIframeApproach();
+        }
+    }
+
+    launch_app_or_alt_url();
+    event.preventDefault();
 }
 
 function populateLayout(smallLayout, page) {
