@@ -9,9 +9,7 @@
     "neat": "~1.7.0",
     "jquery": "~1.11.0",
     "bitters": "~0.10.1",
-    "shufflejs": "~2.1.1",
-    "owlcarousel": "~1.3.2",
-    "owl-carousel": "~1.3.2"
+    "shufflejs": "~2.1.1"
   },
   "devDependencies": {}
 }
