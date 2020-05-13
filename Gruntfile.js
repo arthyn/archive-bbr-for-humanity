@@ -1,3 +1,4 @@
+const sass = require('node-sass');
 // Generated on 2014-11-11 using generator-bourbon-neat 0.1.2
 'use strict';
 
@@ -138,19 +139,10 @@ module.exports = function (grunt) {
             ]
         },
 
-        // Mocha testing framework configuration options
-        mocha: {
-            all: {
-                options: {
-                    run: true,
-                    urls: ['http://<%= connect.options.hostname %>:<%= connect.test.options.port %>/index.html']
-                }
-            }
-        },
-
         // Compiles Sass to CSS and generates necessary files if requested
         sass: {
             options: {
+                implementation: sass,
                 loadPath: [
                     'bower_components/bourbon/dist/',
                     'bower_components/neat/app/assets/stylesheets/'
